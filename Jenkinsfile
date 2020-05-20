@@ -11,6 +11,7 @@ pipeline{
         DOCKER_TOOLBOX_INSTALL_PATH = 'C:/Program Files/Docker Toolbox'
         DOCKER_TAG = getDockerTag()
         DOCKER_REGISTRY = 'tany2020/pipeline'
+        DOCKERHUB_PASSWORD = credentials('dockerhubpwd')
     }
     stages{
         stage("install dependencies"){
@@ -41,7 +42,7 @@ pipeline{
                  bat label: 'docker build', script: 'C:/"Program Files"/"Docker Toolbox"/docker build . -t %DOCKER_REGISTRY%:%DOCKER_TAG%'
                  // Push docker image to dockerhub repo
                  withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerHubPwd')]) {
-                     bat label: 'docker login', script: 'C:/"Program Files"/"Docker Toolbox"/docker login -u tany2020 -p Tan28011992'
+                     bat label: 'docker login', script: 'C:/"Program Files"/"Docker Toolbox"/docker login -u tany2020 -p ${DOCKERHUB_PASSWORD}'
                      bat label: 'docker push', script: 'C:/"Program Files"/"Docker Toolbox"/docker push %DOCKER_REGISTRY%:%DOCKER_TAG%'
                 }
             }
