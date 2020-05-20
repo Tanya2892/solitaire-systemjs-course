@@ -40,10 +40,9 @@ pipeline{
                  //build docker image
                  bat label: 'docker build', script: 'C:/"Program Files"/"Docker Toolbox"/docker build . -t %DOCKER_REGISTRY%:%DOCKER_TAG%'
                  // Push docker image to dockerhub repo
-                 withCredentials([string(credentialsId: 'dockerRegistryPwd', variable: 'DockerRegistryPwd')]) {
-                     bat label: 'docker login', script: 'C:/"Program Files"/"Docker Toolbox"/docker login -u tany2020 -p ${DockerRegistryPwd}'
+                 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerHubPwd')]) {
+                     bat label: 'docker login', script: 'C:/"Program Files"/"Docker Toolbox"/docker login -u tany2020 -p ${dockerHubPwd}'
                      bat label: 'docker push', script: 'C:/"Program Files"/"Docker Toolbox"/docker push %DOCKER_REGISTRY%:%DOCKER_TAG%'
-
                 }
             }
         }
